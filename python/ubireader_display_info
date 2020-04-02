@@ -1,0 +1,3 @@
+#!/system/bin/sh
+
+python3.6 [python_home]/files/arm-linux-androideabi/bin/ubireader_display_info "$@"
