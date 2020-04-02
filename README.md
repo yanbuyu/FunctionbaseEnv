@@ -19,4 +19,6 @@
 
 #### Update
 * `2020.4.2`
-> First commit
+> First commit<br>
+>
+> update common_function.sh & fix some bugs of python3.6.tar.gz<br>

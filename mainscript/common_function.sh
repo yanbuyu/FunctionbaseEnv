@@ -88,12 +88,24 @@ function installbin(){
 }
 
 
+#rand "min" "max"
+function rand(){
+    [ ! -n "$1" ] && echo -e "rand: First command error" && exit 1
+    [ ! -n "$2" ] && echo -e "rand: Second command error" && exit 1
+    local max=$(($2-${1}+1))
+    #增加一个10位的数再求余
+    local num=$(($RANDOM+1000000000))
+    randnum=`echo $(($num%$max+$1))`
+}
+
 function check_busybox(){
     local tool=/system/xbin/busybox
     if [ -f $tool ];then
-        local a=`ls -l /system/xbin/[ 2>/dev/null | grep "$tool"`
-        local b=`ls -l /system/xbin/chattr 2>/dev/null | grep "$tool"`
-        if [ -n "$a" ] && [ -n "$b" ];then      
+        local listnum=`$tool --list | wc -l`
+        rand "1" "$listnum"
+        local applet=`$tool --list | sed -n "${randnum}p"`
+        local a=`ls -l /system/xbin/$applet`
+        if [ -n "$a" ];then      
             return 0
         else
             return 1
