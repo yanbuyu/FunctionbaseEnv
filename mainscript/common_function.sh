@@ -1,4 +1,5 @@
 #!/system/bin/sh
+# Copyright © 2020 The Android Open Source Project
 
 #mount
 function unmount_all() {

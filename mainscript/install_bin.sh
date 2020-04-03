@@ -1,4 +1,6 @@
-#!/system/bin
+#!/system/bin/sh
+# Copyright © 2020 The Android Open Source Project
+
 function functionbase_bin_module(){
 cat <<EOF
 functionbase_commandfile=${env_dir}/mainscript/functionbase_command.sh

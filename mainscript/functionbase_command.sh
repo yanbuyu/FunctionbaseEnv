@@ -1,5 +1,5 @@
 #!/system/bin/sh
-
+# Copyright © 2020 The Android Open Source Project
 ##information of help
 function functionbase_helpinfo(){
 cat <<EOF

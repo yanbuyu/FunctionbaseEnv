@@ -9,5 +9,5 @@ else
     echo -e  "Error, '.../FunctionbaseEnv/mainscript/install_bin.sh' don't exist"
 fi
 
-##Fox example
+##For example
 functionbase -i all --cust
