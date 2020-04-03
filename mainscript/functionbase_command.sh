@@ -29,8 +29,7 @@ else
     exit 1
 fi
 
-##install busybox
-
+##epxport path
 export PATH=/system/xbin:/system/bin:/sbin/.magisk/busybox:$PATH
 
 ##path
