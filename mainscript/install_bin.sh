@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# Copyright © 2020 The Android Open Source Project
+# Copyright © 2020 yanbuyu's Open Source Project
 
 function functionbase_bin_module(){
 cat <<EOF
