@@ -4,8 +4,8 @@
 function functionbase_helpinfo(){
 cat <<EOF
 
-functionbase usage:
-functionbase [--install | -i] [java | python | busybox | aria2c | all] [--cust | --miui]
+\033[36mfunctionbase usage:\033[0m
+\033[33mfunctionbase [--install | -i] [java | python | busybox | aria2c | all] [--cust | --miui]
               [--delete | -d] [java | python | busybox | aria2c | all]
               [--fix | -f]
               [--help | -h]
@@ -15,17 +15,19 @@ commands:
 --delete | -d :    [java | python | busybox | aria2c | all]
 --cust | --miui :    Install java and python environment to the cust block. if this command isn't exist, the environment will install to the '/data/local'.
 --fix | -f :     Fix java or python configuration loss caused by reflashing packages or reboot device.Deservedly, You can copy the '.../Functionbase/build/fix_env.sh' shell script to the directory '/system/etc/init.d' etc.
---help | -h :   show the information of help.
+--help | -h :   show the information of help.\033[0m
 
 EOF
 }
+
+functionbase_usage=`functionbase_helpinfo`
 
 ##scriptfile path
 if [ -n "${functionbase_commandfile}" ];then
     script_filepath=${functionbase_commandfile}
 else
-    echo -e "\nfunctionbase: Error, bin file is error.\nPlease rerun '.../FunctionbaseEnv/build/install_conf.sh'\n"
-    functionbase_helpinfo
+    echo -e "\n\033[36mfunctionbase:\033[0m \033[31mError, bin file is erroneous.\nPlease rerun '.../FunctionbaseEnv/build/install_conf.sh'\n\033[0m"
+    echo -e "$functionbase_usage"
     exit 1
 fi
 
@@ -46,7 +48,7 @@ env_cache_dir=${env_dir}/python
 if [ -f ${env_mainscript_dir}/common_function.sh ];then
     . ${env_mainscript_dir}/common_function.sh
 else
-    echo -e "functionbase: Error, '.../FunctionbaseEnv/mainscript/common_function.sh' don't exist"
+    echo -e "\033[36mfunctionbase:\033[0m \033[31mError, '.../FunctionbaseEnv/mainscript/common_function.sh' don't exist\033[0m"
     exit 2
 fi
 unmount_all
@@ -62,10 +64,10 @@ function functionbase(){
         --fix | -f)
             functionbase_fix "$@";;
         --help | -h)
-            functionbase_helpinfo;;
+            echo -e "`functionbase_helpinfo`";;
         *)
-            echo -e "functionbase: Error, please print right command"
-            functionbase_helpinfo;;
+            echocolor "functionbase: Error, please print right command"
+            echo -e "`functionbase_helpinfo`";;
     esac;
 }
 
@@ -83,8 +85,8 @@ function functionbase_install(){
         all)
             functionbase_install_all "$@";;
         *)
-            echo -e "functionbase: Error, please print right command"
-            functionbase_helpinfo;;
+            echocolor "functionbase: Error, please print right command"
+            echo -e "`functionbase_helpinfo`";;
     esac;
 }
 
@@ -97,8 +99,8 @@ function functionbase_install_java(){
         '')
             functionbase_install_java_start "$1" "$2" "/data/local";;
         *)
-            echo -e "functionbase: Error, please print right command"
-            functionbase_helpinfo;;
+            echocolor "functionbase: Error, please print right command"
+            echo -e "`functionbase_helpinfo`";;
     esac;
 }
 
@@ -131,9 +133,9 @@ EOF
 
 function env_jar_exist(){
     if [ -f ${env_tag_dir}/jar.tar.gz ] && [ -f ${env_tag_dir}/jdk.tar.gz ] && [ -f ${env_tag_dir}/jdklib.tar.gz ] && [ -f ${env_tag_dir}/python3.6.tar.gz ];then
-        echo "functionbase: Ready release $1..."
+        echocolor "functionbase: Ready release $1..."
     else
-        echo "functionbase: Error, tag file don't exist"
+        echocolor "functionbase: Error, tag file don't exist"
         exit 3
     fi
 }
@@ -142,14 +144,14 @@ function functionbase_install_java_start(){
     ##file check
     env_jar_exist "$2"
     if [ -f $3 ];then
-        echo -e "functionbase: Error, $3 is a file, isn't a dir"
+        echocolor "functionbase: Error, $3 is a file, isn't a dir"
     else
         rm -rf $3/jdk
         tar -xzvf ${env_tag_dir}/jdk.tar.gz -C $3
         if [ -d $3/jdk ];then
             tar -xzvf ${env_tag_dir}/jar.tar.gz -C $3/jdk
         else
-            echo "functionbase: Error, Release java fail"
+            echocolor "functionbase: Error, Release java fail"
         fi
     fi
     ##add java env
@@ -207,7 +209,7 @@ function java_python_create_cache(){
     sed -n "/^function $1_conf_module(){/,/^}/p" ${env_mainscript_dir}/functionbase_command.sh >>${env_build_dir}/cache/fix_$1
     fix_$1_module >>${env_build_dir}/cache/fix_$1
     echo -e "##$1 for functionbase" >>${env_build_dir}/cache/fix_$1
-    echo -e "functionbase: $1 installed successfully\nNow You can copy the '.../Functionbase/build/fix_env.sh' shell script to the directory '/system/etc/init.d' etc."
+    echocolor "functionbase: $1 installed successfully\nNow You can copy the '.../Functionbase/build/fix_env.sh' shell script to the directory '/system/etc/init.d' etc."
 }
 
 function functionbase_install_python_start(){
@@ -243,12 +245,12 @@ function functionbase_install_busybox(){
     check_busybox
     case $? in
         0)
-            echo -e "functionbase: '/system/xbin/busybox' already installed";;
+            echocolor "functionbase: '/system/xbin/busybox' already installed";;
         1)
             install_busybox "${env_bin_dir}/busybox"
-            echo -e "functionbase: '/system/xbin/busybox' installed successfully";;
+            echocolor "functionbase: '/system/xbin/busybox' installed successfully";;
         *)
-            echo -e "functionbase: Error, 'install_busybox' function is error"
+            echocolor "functionbase: Error, 'install_busybox' function is erroneous"
             exit 4;;
     esac;
 }
@@ -263,9 +265,9 @@ function functionbase_install_aria2c(){
     if [ ! -f $tool ];then
         cp -af ${env_bin_dir}/aria2c $tool
         chmod "755" $tool
-        echo -e "functionbase: '$tool' installed successfuly"
+        echocolor "functionbase: '$tool' installed successfuly"
     else
-        echo -e "functionbase: '$tool' already installed"
+        echocolor "functionbase: '$tool' already installed"
     fi
 }
 
@@ -278,7 +280,7 @@ function functionbase_install_all(){
     functionbase_install_python "$1" "python" "$3"
     functionbase_install_busybox "$1" "busybox"
     functionbase_install_aria2c "$1" "aria2c"
-    echo -e "functionbase: java python busybox aria2c installed successfully"
+    echocolor "functionbase: java python busybox aria2c installed successfully"
 }
 
 
@@ -297,8 +299,8 @@ function functionbase_delete(){
 	    all)
 	        functionbase_delete_all "$@";;
         *)
-            echo -e "functionbase: Error, please print right command"
-            functionbase_helpinfo;;
+            echocolor "functionbase: Error, please print right command"
+            echo -e "`functionbase_helpinfo`";;
     esac;
 }
 
@@ -313,9 +315,9 @@ function functionbase_delete_java(){
     local conf=${conf_value}
     if [ -f $conf/bin/java ];then
         rm -rf $conf
-        echo -e "functionbase: java deleted successfully"
+        echocolor "functionbase: java deleted successfully"
     else
-        echo -e "functionbase: java don't exist"
+        echocolor "functionbase: java don't exist"
     fi
     rm -f ${env_cache_dir}/fix_java
     rm -f ${env_build_dir}/fix_env.sh
@@ -332,9 +334,9 @@ function functionbase_delete_python(){
     local conf=${conf_value}
     if [ -f $conf/files/bin/python ];then
         rm -rf $conf
-        echo -e "functionbase: python deleted successfully"
+        echocolor "functionbase: python deleted successfully"
     else
-        echo -e "functionbase: python don't exist"
+        echocolor "functionbase: python don't exist"
     fi
     rm -f ${env_cache_dir}/fix_python
     rm -f ${env_build_dir}/fix_env.sh
@@ -360,7 +362,7 @@ function functionbase_delete_aria2c(){
 		rm -f $tool
 		return 0
 	else
-		echo "functionbase: '$tool' don't exist"
+		echocolor "functionbase: '$tool' don't exist"
 		return 1
 	fi
 }
@@ -375,7 +377,7 @@ function functionbase_delete_all(){
 	functionbase_delete_python "$@"
 	functionbase_delete_busybox "$@"
 	functionbase_delete_aria2c "$@"
-	echo -e "functionbase: java python busybox aria2c deleted successfully"
+	echocolor "functionbase: java python busybox aria2c deleted successfully"
 }
 
 
@@ -388,9 +390,9 @@ function functionbase_fix(){
 	local fix_file=${env_build_dir}/fix_env.sh
 	if [ -f ${fix_file} ];then
 		sh "${fix_file}"
-		echo -e "functionbase: The environment fixed successfully"
+		echocolor "functionbase: The environment fixed successfully"
 	else
-		echo -e "functionbase: '.../FunctionbaseEnv/build/fix_env.sh' file don't exist"
+		echocolor "functionbase: '.../FunctionbaseEnv/build/fix_env.sh' file don't exist"
 		exit 5
 	fi
 }

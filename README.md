@@ -22,6 +22,8 @@
 > Fix some bugs.<br>
 >
 > Modify mainscript<br>
+>
+> Add show colorful string<br>
 
 * `2020.4.2`
 > First commit.<br>
