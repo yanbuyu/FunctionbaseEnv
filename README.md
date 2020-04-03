@@ -19,9 +19,11 @@
 
 #### Update
 * `2020.4.3`
-> fix some bugs.<br>
+> Fix some bugs.<br>
+>
+> Modify mainscript<br>
 
 * `2020.4.2`
 > First commit.<br>
 >
-> update common_function.sh & fix some bugs of python3.6.tar.gz.<br>
+> Update common_function.sh & fix some bugs of python3.6.tar.gz.<br>

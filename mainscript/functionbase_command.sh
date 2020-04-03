@@ -48,7 +48,7 @@ if [ -f ${env_mainscript_dir}/common_function.sh ];then
     . ${env_mainscript_dir}/common_function.sh
 else
     echo -e "functionbase: Error, '.../FunctionbaseEnv/mainscript/common_function.sh' don't exist"
-    exit 1
+    exit 2
 fi
 unmount_all
 mount_all
@@ -135,7 +135,7 @@ function env_jar_exist(){
         echo "functionbase: Ready release $1..."
     else
         echo "functionbase: Error, tag file don't exist"
-        exit 1
+        exit 3
     fi
 }
 
@@ -249,7 +249,8 @@ function functionbase_install_busybox(){
             install_busybox "${env_bin_dir}/busybox"
             echo -e "functionbase: '/system/xbin/busybox' installed successfully";;
         *)
-            echo -e "functionbase: Error, `install_busybox` function is error";;
+            echo -e "functionbase: Error, 'install_busybox' function is error"
+            exit 4;;
     esac;
 }
 
@@ -391,6 +392,7 @@ function functionbase_fix(){
 		echo -e "functionbase: The environment fixed successfully"
 	else
 		echo -e "functionbase: '.../FunctionbaseEnv/build/fix_env.sh' file don't exist"
+		exit 5
 	fi
 }
 

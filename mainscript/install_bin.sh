@@ -1,5 +1,6 @@
 #!/system/bin/sh
 # Copyright © 2020 yanbuyu's Open Source Project
+##warnning: please run it by "sh" command.
 
 function functionbase_bin_module(){
 cat <<EOF
