@@ -79,9 +79,9 @@ function getconf(){
     fi
 }
 
-#check_command "applet" "number of commands"
+#check_command "applet" "all commands" "number of commands"
 function check_command(){
-	[ "$#" -gt "$2" ] && echocolor "$1: Error, please print right command" && exit 1
+	[ "$2" -gt "$3" ] && echocolor "$1: Error, please print right command" && exit 1
 }
 
 

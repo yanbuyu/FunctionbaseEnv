@@ -92,7 +92,7 @@ function functionbase_install(){
 
 #Third tier commands of install java
 function functionbase_install_java(){
-    check_command "functionbase" "3"
+    check_command "functionbase" "$#" "3"
     case $3 in
         --cust | --miui)
             functionbase_install_java_start "$1" "$2" "/cust";;
@@ -241,7 +241,7 @@ function functionbase_install_python_start(){
 #install busybox
 ############
 function functionbase_install_busybox(){
-    check_command "functionbase" "2"
+    check_command "functionbase" "$#" "2"
     check_busybox
     case $? in
         0)
@@ -260,7 +260,7 @@ function functionbase_install_busybox(){
 #install aria2c
 ############
 function functionbase_install_aria2c(){
-    check_command "functionbase" "2"
+    check_command "functionbase" "$#" "2"
     local tool=/system/bin/aria2c
     if [ ! -f $tool ];then
         cp -af ${env_bin_dir}/aria2c $tool
@@ -310,7 +310,7 @@ function functionbase_delete(){
 ############
 #Third tier commands of delete java
 function functionbase_delete_java(){
-    check_command "functionbase" "2"
+    check_command "functionbase" "$#" "2"
     getconf "Java_Home" "$env_config_dir/FunctionbaseEnv.conf"
     local conf=${conf_value}
     if [ -f $conf/bin/java ];then
@@ -329,7 +329,7 @@ function functionbase_delete_java(){
 ############
 #Third tier commands of delete python
 function functionbase_delete_python(){
-    check_command "functionbase" "2"
+    check_command "functionbase" "$#" "2"
     getconf "Python_Home" "$env_config_dir/FunctionbaseEnv.conf"
     local conf=${conf_value}
     if [ -f $conf/files/bin/python ];then
@@ -347,7 +347,7 @@ function functionbase_delete_python(){
 #delete busybox
 ############
 function functionbase_delete_busybox(){
-	check_command "functionbase" "2"
+	check_command "functionbase" "$#" "2"
 	delete_busybox "functionbase"
 }
 
@@ -356,7 +356,7 @@ function functionbase_delete_busybox(){
 #delete aria2c
 ############
 function functionbase_delete_aria2c(){
-	check_command "functionbase" "2"
+	check_command "functionbase" "$#" "2"
 	local tool=/system/bin/aria2c
 	if [ -f $tool ];then
 		rm -f $tool
@@ -372,7 +372,7 @@ function functionbase_delete_aria2c(){
 #delete all
 ############
 function functionbase_delete_all(){
-	check_command "functionbase" "2"
+	check_command "functionbase" "$#" "2"
 	functionbase_delete_java "$@"
 	functionbase_delete_python "$@"
 	functionbase_delete_busybox "$@"
@@ -386,7 +386,7 @@ function functionbase_delete_all(){
 #fix 
 ############
 function functionbase_fix(){
-	check_command "functionbase" "1"
+	check_command "functionbase" "$#" "1"
 	local fix_file=${env_build_dir}/fix_env.sh
 	if [ -f ${fix_file} ];then
 		sh "${fix_file}"
