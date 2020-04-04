@@ -13,7 +13,7 @@ cat <<EOF
 commands:
 --install | -i :    [java | python | busybox | aria2c | all]
 --delete | -d :    [java | python | busybox | aria2c | all]
---cust | --miui :    Install java and python environment to the cust block. if this command isn't exist, the environment will install to the '/data/local'.
+--cust | --miui :    Install java and python environment to the cust block. if can't find this command, the environment will install to the '/data/local'.
 --fix | -f :     Fix java or python configuration loss caused by reflashing packages or reboot device.Deservedly, You can copy the '.../Functionbase/build/fix_env.sh' shell script to the directory '/system/etc/init.d' etc.
 --help | -h :   show the information of help.\033[0m
 
@@ -48,7 +48,7 @@ env_cache_dir=${env_dir}/python
 if [ -f ${env_mainscript_dir}/common_function.sh ];then
     . ${env_mainscript_dir}/common_function.sh
 else
-    echo -e "\033[36mfunctionbase:\033[0m \033[31mError, '.../FunctionbaseEnv/mainscript/common_function.sh' don't exist\033[0m"
+    echo -e "\033[36mfunctionbase:\033[0m \033[31mError, can't find '.../FunctionbaseEnv/mainscript/common_function.sh'\033[0m"
     exit 2
 fi
 unmount_all
@@ -135,7 +135,7 @@ function env_jar_exist(){
     if [ -f ${env_tag_dir}/jar.tar.gz ] && [ -f ${env_tag_dir}/jdk.tar.gz ] && [ -f ${env_tag_dir}/jdklib.tar.gz ] && [ -f ${env_tag_dir}/python3.6.tar.gz ];then
         echocolor "functionbase: Ready release $1..."
     else
-        echocolor "functionbase: Error, tag file don't exist"
+        echocolor "functionbase: Error, Can't find tag file"
         exit 3
     fi
 }
@@ -336,7 +336,7 @@ function functionbase_delete_python(){
         rm -rf $conf
         echocolor "functionbase: python deleted successfully"
     else
-        echocolor "functionbase: python don't exist"
+        echocolor "functionbase: Can't find python"
     fi
     rm -f ${env_cache_dir}/fix_python
     rm -f ${env_build_dir}/fix_env.sh
@@ -362,7 +362,7 @@ function functionbase_delete_aria2c(){
 		rm -f $tool
 		return 0
 	else
-		echocolor "functionbase: '$tool' don't exist"
+		echocolor "functionbase: '$tool' already cleaned"
 		return 1
 	fi
 }
@@ -392,7 +392,7 @@ function functionbase_fix(){
 		sh "${fix_file}"
 		echocolor "functionbase: The environment fixed successfully"
 	else
-		echocolor "functionbase: '.../FunctionbaseEnv/build/fix_env.sh' file don't exist"
+		echocolor "functionbase: Can't find '.../FunctionbaseEnv/build/fix_env.sh' file"
 		exit 5
 	fi
 }

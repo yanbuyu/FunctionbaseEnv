@@ -1,4 +1,5 @@
 #!/system/bin/sh
+# Copyright © 2020 yanbuyu's Open Source Project
 
 ##字符完全不转义，包括\n \r等
 function catstring(){
@@ -9,7 +10,7 @@ EOF
 
 ##转义/ # [ ] ( )
 function escape(){
-local info=`catstring "$1" | sed 's/#/\\#/g;s#\[#\\[#g;s#\]#\\]#g;s#(#\\(#g;s#)#\\)#g'`
+local info=`catstring "$1" | sed 's/#/\\#/g;s#\/#\\/#g;s#\[#\\[#g;s#\]#\\]#g;s#(#\\(#g;s#)#\\)#g'`
 cat <<EOF
 $info
 EOF
@@ -22,8 +23,8 @@ function echocolor(){
     [ ! -n "$a" ] && echo -e "\033[35m${1}\033[0m" && return 1
     local b=`catstring "$1" | sed 's#：#:#g'`
     local applet=`catstring "$b" | cut -d':' -f1 | sed '/^[[:space:]]$/d' | sed -n '1p'`
-    local info=`escape "$b" | sed -r "s#^${applet}[[:space:]]+:##"`
-    local c=`catstring "$1" | grep -i -E "error|erroneous|don't|didn't|isn't|aren't|wasn't|weren't|won't"`
+    local info=`escape "$b" | sed -r "s#^${applet}:##;s#^${applet}[[:space:]]+:##"`
+    local c=`catstring "$1" | grep -i -E "error|erroneous|don't|didn't|isn't|aren't|wasn't|weren't|won't|can't|couldn't"`
     if [ -n "$c" ];then
         echo -e "\033[36m${applet}:\033[0m\033[31m${info}\033[0m"
     else
@@ -102,7 +103,7 @@ function installbin(){
             cp -af $2 /system/bin/$applet
             chmod "755" /system/bin/$applet
         else
-            echocolor "installbin: bin file don't exist"
+            echocolor "installbin: Can't find '$2' file"
         fi;;
     *)
         if [ -f "$1" ];then
@@ -154,7 +155,7 @@ function check_install_busybox(){
             install_busybox "${env_bin_dir}/busybox"
             echocolor "check_install_busybox: '/system/xbin/busybox' installed successfully";;
         *)
-            echocolor "check_install_busybox: Error, 'install_busybox' function is error"
+            echocolor "check_install_busybox: Error, 'install_busybox' function is erroneus"
             exit 4;;
     esac;
 }
@@ -172,7 +173,7 @@ function install_busybox(){
 function delete_busybox(){
 	local tool=/system/xbin/busybox
 	if [ ! -f $tool ];then
-		echocolor "$1: '$tool' don't exist"
+		echocolor "$1: Can't find '$tool'"
 		return 1
 	else
 		for line in `$tool --list`;do
@@ -190,7 +191,7 @@ $1_commandfile=${env_dir}/mainscript/$1_command.sh
 if [ -f \${$1_commandfile} ];then
     . \${$1_commandfile} "\$@"
 else
-    echocolor "Error, the main script don't exist"
+    echocolor "install_bin_module: Error, Can't find '$1_command.sh'"
     exit
 fi
 EOF
