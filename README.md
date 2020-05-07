@@ -18,6 +18,12 @@
 - Установка UKA
 
 #### Update
+#### Update
+* `2020.5.7`
+> Fix some bugs.<br>
+>
+> Update jar.tar.gz<br>
+
 * `2020.4.3`
 > Fix some bugs.<br>
 >
