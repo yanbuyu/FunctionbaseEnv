@@ -18,7 +18,6 @@
 - Установка UKA
 
 #### Update
-#### Update
 * `2020.5.7`
 > Fix some bugs.<br>
 >
