@@ -23,6 +23,8 @@
 > Fix some bugs.<br>
 >
 > Update jar.tar.gz<br>
+>
+> Fix apktool-2.4.2.jar bug<br>
 
 * `2020.4.3`
 > Fix some bugs.<br>
