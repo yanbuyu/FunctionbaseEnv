@@ -20,14 +20,12 @@ commands:
 EOF
 }
 
-functionbase_usage=`functionbase_helpinfo`
-
 ##scriptfile path
 if [ -n "${functionbase_commandfile}" ];then
     script_filepath=${functionbase_commandfile}
 else
     echo -e "\n\033[36mfunctionbase:\033[0m \033[31mError, bin file is erroneous.\nPlease rerun '.../FunctionbaseEnv/build/install_conf.sh'\n\033[0m"
-    echo -e "$functionbase_usage"
+    echo -e "`functionbase_helpinfo`"
     exit 1
 fi
 
@@ -123,6 +121,9 @@ EOF
 function fix_java_module(){
 cat << EOF
 
+mount -o rw,remount / 2>/dev/null;
+mount -o rw,remount /data 2>/dev/null;
+mount -o rw,remount /cust 2>/dev/null;
 conf=\`grep "#java for functionbase" /system/etc/mkshrc\`
 [ -n "\$conf" ] && sed -i "/#java for functionbase/,/#java for functionbase/d" /system/etc/mkshrc
 java_home=${java_home}
