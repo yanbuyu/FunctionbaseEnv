@@ -18,6 +18,9 @@
 - Установка UKA
 
 #### Update
+* `2020.5.9`
+> Fix apktool-2.4.2.jar bug<br>
+
 * `2020.5.7`
 > Fix some bugs.<br>
 >
