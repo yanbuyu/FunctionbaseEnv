@@ -15,9 +15,12 @@
 - 予怀
 - Andro Black
 - http://www.oracle.com/
-- Установка UKA
+- termux
 
 #### Update
+* `2020.5.10`
+> Update python3.8.2<br>
+
 * `2020.5.9`
 > Fix apktool-2.4.2.jar bug<br>
 

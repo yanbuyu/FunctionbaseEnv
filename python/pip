@@ -1,3 +1,0 @@
-#!/system/bin/sh
-
-py [python_home]/files/arm-linux-androideabi/bin/pip "$@"

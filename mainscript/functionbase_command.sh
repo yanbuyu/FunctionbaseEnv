@@ -133,7 +133,7 @@ EOF
 }
 
 function env_jar_exist(){
-    if [ -f ${env_tag_dir}/jar.tar.gz ] && [ -f ${env_tag_dir}/jdk.tar.gz ] && [ -f ${env_tag_dir}/jdklib.tar.gz ] && [ -f ${env_tag_dir}/python3.6.tar.gz ];then
+    if [ -f ${env_tag_dir}/jar.tar.gz ] && [ -f ${env_tag_dir}/jdk.tar.gz ] && [ -f ${env_tag_dir}/jdklib.tar.gz ] && [ -f ${env_tag_dir}/python3.8.2.tar.gz ];then
         echocolor "functionbase: Ready release $1..."
     else
         echocolor "functionbase: Error, Can't find tag file"
@@ -178,26 +178,6 @@ function functionbase_install_python(){
     esac;
 }
 
-
-function python_conf_module(){
-cat <<EOF
-#python for functionbase
-export PATH=${python_home}/files/bin:\$PATH
-#python for functionbase
-EOF
-}
-
-
-function fix_python_module(){
-cat << EOF
-
-conf=\`grep "#python for functionbase" /system/etc/mkshrc\`
-[ -n "\$conf" ] && sed -i "/#python for functionbase/,/#python for functionbase/d" /system/etc/mkshrc
-python_home=${python_home}
-python_conf_module >>/system/etc/mkshrc
-EOF
-}
-
 function remove_java_python_flag(){
     local conf=`grep "#$1 for functionbase" /system/etc/mkshrc`
     [ -n "$conf" ] && sed -i "/#$1 for functionbase/,/#$1 for functionbase/d" /system/etc/mkshrc
@@ -219,20 +199,10 @@ function functionbase_install_python_start(){
         echo -e "functionbase: Error, $3 is a file, isn't a dir"
     else
         ##add python env
-        remove_java_python_flag "$2"
-        rm -rf $3/python3.6
-        tar -xzvf ${env_tag_dir}/python3.6.tar.gz -C $3
-        python_home=$3/python3.6
-        ##create java cache
-        java_python_create_cache "$2"
-        python_conf_module >>/system/etc/mkshrc
-        ##create bin file
-        mkdir -p ${env_dir}/tmp
-        cp -af ${env_python_dir}/* ${env_dir}/tmp
-        chmod -R "755" ${env_dir}/tmp/*
-        sed -i "s#\[python_home\]#${python_home}#g" ${env_dir}/tmp/*
-        cp -af ${env_dir}/tmp/* ${python_home}/files/bin
-        rm -rf ${env_dir}/tmp
+        rm -rf $3/python3.8.2
+        tar -xzvf ${env_tag_dir}/python3.8.2.tar.gz -C $3
+        tar -xzvf ${env_tag_dir}/python3.8.2_lib.tar.gz -C $3/python3.8.2
+        python_home=$3/python3.8.2
         setconf "Python_Home" "${python_home}" "$env_config_dir/FunctionbaseEnv.conf"
     fi
 }
@@ -339,7 +309,6 @@ function functionbase_delete_python(){
     else
         echocolor "functionbase: Can't find python"
     fi
-    rm -f ${env_cache_dir}/fix_python
     rm -f ${env_build_dir}/fix_env.sh
 }
 
@@ -402,13 +371,8 @@ function functionbase_fix(){
 #Append cache
 function functionbase_append_allcache(){
     local java_cache=${env_build_dir}/cache/fix_java
-    local python_cache=${env_build_dir}/cache/fix_python
-    if [ -f ${python_cache} ] && [ -f ${java_cache} ];then
-        cat ${java_cache} ${python_cache} >${env_build_dir}/fix_env.sh
-    elif [ ! -f ${python_cache} ] && [ -f ${java_cache} ];then
+    if [ -f ${java_cache} ];then
         mv -f ${java_cache} ${env_build_dir}/fix_env.sh
-    elif [ -f ${python_cache} ] && [ ! -f ${java_cache} ];then
-        mv -f ${python_cache} ${env_build_dir}/fix_env.sh
     else
         rm -f ${env_build_dir}/fix_env.sh
     fi
