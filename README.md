@@ -19,6 +19,9 @@
 
 #### Update
 * `2020.5.10`
+> Fix python3.8.2 bug<br>
+
+* `2020.5.10`
 > Update python3.8.2<br>
 
 * `2020.5.9`
