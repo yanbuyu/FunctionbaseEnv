@@ -5,14 +5,14 @@ function functionbase_helpinfo(){
 cat <<EOF
 
 \033[36mfunctionbase usage:\033[0m
-\033[33mfunctionbase [--install | -i] [java | python | busybox | aria2c | all] [--cust | --miui]
-              [--delete | -d] [java | python | busybox | aria2c | all]
+\033[33mfunctionbase [--install | -i] [java | python | all] [--cust | --miui]
+              [--delete | -d] [java | python | all]
               [--fix | -f]
               [--help | -h]
 
 commands:
---install | -i :    [java | python | busybox | aria2c | all]
---delete | -d :    [java | python | busybox | aria2c | all]
+--install | -i :    [java | python | all]
+--delete | -d :    [java | python | aria2c | all]
 --cust | --miui :    Install java and python environment to the cust block. if can't find this command, the environment will install to the '/data/local'.
 --fix | -f :     Fix java or python configuration loss caused by reflashing packages or reboot device.Deservedly, You can copy the '.../Functionbase/build/fix_env.sh' shell script to the directory '/system/etc/init.d' etc.
 --help | -h :   show the information of help.\033[0m
@@ -20,20 +20,11 @@ commands:
 EOF
 }
 
-##scriptfile path
-if [ -n "${functionbase_commandfile}" ];then
-    script_filepath=${functionbase_commandfile}
-else
-    echo -e "\n\033[36mfunctionbase:\033[0m \033[31mError, bin file is erroneous.\nPlease rerun '.../FunctionbaseEnv/build/install_conf.sh'\n\033[0m"
-    echo -e "`functionbase_helpinfo`"
-    exit 1
-fi
-
 ##epxport path
 export PATH=/system/xbin:/system/bin:/sbin/.magisk/busybox:$PATH
 
 ##path
-env_dir=`dirname ${script_filepath} | sed 's#/mainscript$##' | sed 's#/toolfile/functionbase$##;s#^/sdcard#/data/media/0#;s#^/storage/self/primary#/data/media/0#;s#^/storage/emulated/0#/data/media/0#'`
+#env_dir=`dirname ${script_filepath} | sed 's#/mainscript$##' | sed 's#/toolfile/functionbase$##;s#^/sdcard#/data/media/0#;s#^/storage/self/primary#/data/media/0#;s#^/storage/emulated/0#/data/media/0#'`
 env_tag_dir=${env_dir}/tag
 env_bin_dir=${env_dir}/bin
 env_config_dir=${env_dir}/config
@@ -76,10 +67,6 @@ function functionbase_install(){
             functionbase_install_java "$@";;
         python)
             functionbase_install_python "$@";;
-        busybox)
-            functionbase_install_busybox "$@";;
-        aria2c)
-            functionbase_install_aria2c "$@";;
         all)
             functionbase_install_all "$@";;
         *)
@@ -207,51 +194,13 @@ function functionbase_install_python_start(){
     fi
 }
 
-
-############
-#install busybox
-############
-function functionbase_install_busybox(){
-    check_command "functionbase" "$#" "2"
-    check_busybox
-    case $? in
-        0)
-            echocolor "functionbase: '/system/xbin/busybox' already installed";;
-        1)
-            install_busybox "${env_bin_dir}/busybox"
-            echocolor "functionbase: '/system/xbin/busybox' installed successfully";;
-        *)
-            echocolor "functionbase: Error, 'install_busybox' function is erroneous"
-            exit 4;;
-    esac;
-}
-
-
-############
-#install aria2c
-############
-function functionbase_install_aria2c(){
-    check_command "functionbase" "$#" "2"
-    local tool=/system/bin/aria2c
-    if [ ! -f $tool ];then
-        cp -af ${env_bin_dir}/aria2c $tool
-        chmod "755" $tool
-        echocolor "functionbase: '$tool' installed successfuly"
-    else
-        echocolor "functionbase: '$tool' already installed"
-    fi
-}
-
-
 ############
 #install all environment
 ############
 function functionbase_install_all(){
     functionbase_install_java "$1" "java" "$3"
     functionbase_install_python "$1" "python" "$3"
-    functionbase_install_busybox "$1" "busybox"
-    functionbase_install_aria2c "$1" "aria2c"
-    echocolor "functionbase: java python busybox aria2c installed successfully"
+    echocolor "functionbase: java python installed successfully"
 }
 
 
@@ -263,10 +212,6 @@ function functionbase_delete(){
             functionbase_delete_java "$@";;
         python)
             functionbase_delete_python "$@";;
-        busybox)
-            functionbase_delete_busybox "$@";;
-        aria2c)
-            functionbase_delete_aria2c "$@";;
 	    all)
 	        functionbase_delete_all "$@";;
         *)
@@ -314,40 +259,13 @@ function functionbase_delete_python(){
 
 
 ############
-#delete busybox
-############
-function functionbase_delete_busybox(){
-	check_command "functionbase" "$#" "2"
-	delete_busybox "functionbase"
-}
-
-
-############
-#delete aria2c
-############
-function functionbase_delete_aria2c(){
-	check_command "functionbase" "$#" "2"
-	local tool=/system/bin/aria2c
-	if [ -f $tool ];then
-		rm -f $tool
-		return 0
-	else
-		echocolor "functionbase: '$tool' already cleaned"
-		return 1
-	fi
-}
-
-
-############
 #delete all
 ############
 function functionbase_delete_all(){
 	check_command "functionbase" "$#" "2"
 	functionbase_delete_java "$@"
 	functionbase_delete_python "$@"
-	functionbase_delete_busybox "$@"
-	functionbase_delete_aria2c "$@"
-	echocolor "functionbase: java python busybox aria2c deleted successfully"
+	echocolor "functionbase: java python deleted successfully"
 }
 
 
