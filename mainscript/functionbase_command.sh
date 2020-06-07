@@ -5,14 +5,14 @@ function functionbase_helpinfo(){
 cat <<EOF
 
 \033[36mfunctionbase usage:\033[0m
-\033[33mfunctionbase [--install | -i] [java | python | all] [--cust | --miui]
-              [--delete | -d] [java | python | all]
+\033[33mfunctionbase [--install | -i] [java | python3.7 | python3.8.2 | all] <directory>
+              [--delete | -d] [java | python | all] <directory>
               [--fix | -f]
               [--help | -h]
 
 commands:
---install | -i :    [java | python | all]
---delete | -d :    [java | python | aria2c | all]
+--install | -i :    Install java python3.7 python3.8.2 or all environment.
+--delete | -d :    Deleted java python3.7 python3.8.2 or all environment.
 --cust | --miui :    Install java and python environment to the cust block. if can't find this command, the environment will install to the '/data/local'.
 --fix | -f :     Fix java or python configuration loss caused by reflashing packages or reboot device.Deservedly, You can copy the '.../Functionbase/build/fix_env.sh' shell script to the directory '/system/etc/init.d' etc.
 --help | -h :   show the information of help.\033[0m
@@ -46,13 +46,13 @@ mount_all
 #First tier commands
 function functionbase(){
     case $1 in
-        --install | -i )
+        '--install' | '-i' )
             functionbase_install "$@";;
-        --delete | -d )
+        '--delete' | '-d' )
             functionbase_delete "$@";;
-        --fix | -f)
+        '--fix' | '-f')
             functionbase_fix "$@";;
-        --help | -h)
+        '--help' | '-h')
             echo -e "`functionbase_helpinfo`";;
         *)
             echocolor "functionbase: Error, please print right command"
@@ -79,7 +79,7 @@ function functionbase_install(){
 function functionbase_install_java(){
     check_command "functionbase" "$#" "3"
     case $3 in
-        --cust | --miui)
+        '--cust' | '--miui')
             functionbase_install_java_start "$1" "$2" "/cust";;
         '')
             functionbase_install_java_start "$1" "$2" "/data/local";;
@@ -107,7 +107,6 @@ EOF
 
 function fix_java_module(){
 cat << EOF
-
 mount -o rw,remount / 2>/dev/null;
 mount -o rw,remount /data 2>/dev/null;
 mount -o rw,remount /cust 2>/dev/null;
