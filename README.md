@@ -3,7 +3,7 @@
 
 #### WARNNING
 - the system cust vendor can read and write.
-- If "Error, bin file is error" or "inaccessible or not found" error is displayed, please rerun ".../FunctionbaseEnv/mainscript/install_bin.sh" or "...FunctionbaseEnv/build/install_env.sh" script.
+- If "Error, bin file is error" or "inaccessible or not found" error is displayed, please rerun "...FunctionbaseEnv/build/install_env.sh" script.
 - When you want to run ".../FunctionbaseEnv/build/install_env.sh", please use "sh" command , don't use "source" and "." command.
 
 #### 警告
