@@ -18,6 +18,9 @@
 - termux
 
 #### Update
+* `2020.6.9`
+> update python3.8.3<br>
+
 * `2020.5.12`
 > Fix python3.8.2 bug<br>
 

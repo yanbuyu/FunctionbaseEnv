@@ -5,14 +5,14 @@ function env_setup_helpinfo(){
 cat <<EOF
 
 \033[36mfunctionbase usage:\033[0m
-\033[33mfunctionbase [--install | -i] [jdk | python3.7 | python3.8.2 | all] <directory>
+\033[33mfunctionbase [--install | -i] [jdk | python3.8.3 | python3.8.2 | all] <directory>
               [--delete | -d] [jdk | python | all] <directory>
               [--fix | -f]
               [--help | -h]
 
 commands:
---install | -i :    Install jdk python3.7 python3.8.2 or all environment.
---delete | -d :    Deleted jdk python3.7 python3.8.2 or all environment.
+--install | -i :    Install jdk python3.8.3 python3.8.2 or all environment.
+--delete | -d :    Deleted jdk python3.8.3 python3.8.2 or all environment.
 --fix | -f :     Fix jdk or python configuration loss caused by reflashing packages or reboot device.Deservedly, You can copy the '.../Functionbase/build/fix_env.sh' shell script to the directory '/system/etc/init.d' etc.
 --help | -h :   show the information of help.\033[0m
 
@@ -43,7 +43,7 @@ unmount_all
 mount_all
 
 function env_jar_exist(){
-    if [ -f ${env_tag_dir}/jar.tar.gz ] && [ -f ${env_tag_dir}/jdk.tar.gz ] && [ -f ${env_tag_dir}/jdklib.tar.gz ] && [ -f ${env_tag_dir}/python3.8.2.tar.gz ] && [ -f ${env_tag_dir}/python3.7.tar.gz ];then
+    if [ -f ${env_tag_dir}/jar.tar.gz ] && [ -f ${env_tag_dir}/jdk.tar.gz ] && [ -f ${env_tag_dir}/jdklib.tar.gz ] && [ -f ${env_tag_dir}/python3.8.2.tar.gz ] && [ -f ${env_tag_dir}/python3.8.3.tar.gz ];then
         echocolor "env_setup: Ready release $1..."
     else
         echocolor "env_setup: Error, Can't find tag file"
@@ -152,13 +152,13 @@ function env_setup_delete(){
     case $2 in
         'jdk')
             env_setup_delete_env "$@";;
-        'python3.7')
+        'python3.8.3')
             env_setup_delete_env "$@";;
         'python3.8.2')
             env_setup_delete_env "$@";;
         'all')
             env_setup_delete_env "$1" "jdk" "$3"
-            env_setup_delete_env "$1" "python3.7" "$3"
+            env_setup_delete_env "$1" "python3.8.3" "$3"
             env_setup_delete_env "$1" "python3.8.2" "$3"
             ;;
         *)
@@ -179,13 +179,13 @@ function env_setup_install(){
     case $2 in
         'jdk')
             env_setup_install_java "$@";;
-        'python3.7')
+        'python3.8.3')
             env_setup_install_python "$@";;
         'python3.8.2')
             env_setup_install_python "$@";;
         'all')
             env_setup_install_java "$1" "jdk" "$3"
-            env_setup_install_python "$1" "python3.8.2" "$3"
+            env_setup_install_python "$1" "python3.8.3" "$3"
             ;;
         *)
             env_setup_error_exit 3;;
