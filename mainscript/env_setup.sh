@@ -185,7 +185,7 @@ function env_setup_install(){
             env_setup_install_python "$@";;
         'all')
             env_setup_install_java "$1" "jdk" "$3"
-            env_setup_install_python "$1" "python3.7" "$3"
+            env_setup_install_python "$1" "python3.8.2" "$3"
             ;;
         *)
             env_setup_error_exit 3;;
