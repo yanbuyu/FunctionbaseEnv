@@ -5,7 +5,7 @@ function functionbase_helpinfo(){
 cat <<EOF
 
 \033[36mfunctionbase usage:\033[0m
-\033[33mfunctionbase [--install | -i] [java | python3.7 | python3.8.2 | all] <directory>
+\033[33mfunctionbase [--install | -i] [java | python3.8.2 | python3.8.3 | all] <directory>
               [--delete | -d] [java | python | all] <directory>
               [--fix | -f]
               [--help | -h]
