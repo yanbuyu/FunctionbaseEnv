@@ -18,6 +18,9 @@
 - termux
 
 #### Update
+* `2020.8.23`
+> Update python3.8.5<br>
+
 * `2020.6.9`
 > update Apktool 2.4.2-Black-SNAPSHOT<br>
 
